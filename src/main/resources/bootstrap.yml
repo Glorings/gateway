@@ -1,18 +1,104 @@
 server:
-  port: 8899
+  port: 5001
 spring:
   application:
     name: gateway
+  autoconfigure:
+    exclude:
 
+
+#spring:
+#  cloud:
+#    gateway:
+#      routes: #当访问http://localhost:8080/baidu,直接转发到https://www.baidu.com/
+#      - id: baidu_route
+#        uri: http://baidu.com:80/
+#        predicates:
+#        - Path=/baidu
+
+#after断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes: #当访问http://localhost:8080/baidu,直接转发到https://www.baidu.com/
+#      - id: after_route
+#        uri: http://baidu.com:80/
+#        predicates:
+#        - After=2019-07-11T18:18:54.401+08:00[Asia/Shanghai]
+
+#Between断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: between_route
+#        uri: http://xujin.org
+#        predicates:
+#        - name: Between
+#          args:
+#            datetime1: 2019-07-11T18:18:54.401+08:00[Asia/Shanghai]
+#            datetime2: 2019-07-11T21:18:54.401+08:00[Asia/Shanghai]
+
+#Cookie断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: cookie_route
+#        uri: http://localhost:8082/test/cookie
+#        predicates:
+#          - Cookie=ttt,PPP
+
+#Head断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: head_routes
+#        uri: http://localhost:8082/test/cookie
+#        predicates:
+#          - Header=token,Gloring
+
+#host断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: host_routes
+#        uri: http://localhost:8082/test/cookie
+#        predicates:
+#          - Host=**.navicat.com:5001
+
+
+#Method断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: method_routes
+#        uri: http://localhost:8082/test/cookie
+#        predicates:
+#          - Method=GET
+
+#Query断言
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: method_routes
+#        uri: http://localhost:8082/test/cookie
+#        predicates:
+#          - Query=token,Glorings
+
+#RemoteAddr断言
 spring:
   cloud:
     gateway:
-      routes: #当访问http://localhost:8080/baidu,直接转发到https://www.baidu.com/
-      - id: baidu_route
-        uri: http://baidu.com:80/
+      routes:
+      - id: method_routes
+        uri: http://localhost:8082/test/cookie
         predicates:
-        - Path=/baidu
-
+          - RemoteAddr=127.0.0.1
 
 logging: ## Spring Cloud Gateway的日志配置
   level:
