@@ -1,6 +1,7 @@
 package com.example.gateway;
 
 import com.example.gateway.filter.CustomGatewayFilter;
+import com.example.gateway.filter.GatewayRateLimitFilterByIp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -8,6 +9,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -144,14 +146,14 @@ public class GatewayApplication {
                 .build();
     }*/
 
-    @Bean
+/*    @Bean
     public RouteLocator retryRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
             .route("retry_route", r -> r.path("/test/retry")
                     .filters(f ->f.retry(config -> config.setRetries(2).setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)))
                     .uri("http://localhost:8082/retry?key=abc&count=5"))
             .build();
-    }
+    }*/
 
     //自定义GatewayFilter
   /*  @Bean
@@ -165,4 +167,14 @@ public class GatewayApplication {
                 )
                 .build();
     }*/
+
+    @Bean
+    public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(r -> r.path("/test/rateLimit")
+                        .filters(f -> f.filter(new GatewayRateLimitFilterByIp(10,1,Duration.ofSeconds(1))))
+                        .uri("http://localhost:3002/hello/rateLimit")
+                        .id("rateLimit_route")
+                ).build();
+    }
 }

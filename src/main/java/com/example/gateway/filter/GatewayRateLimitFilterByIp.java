@@ -62,7 +62,7 @@ public class GatewayRateLimitFilterByIp implements GatewayFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
         Bucket bucket = LOCAL_CACHE.computeIfAbsent(ip, k -> createNewBucket());
-        log.debug("IP:{} ,令牌通可用的Token数量:{} " ,ip,bucket.getAvailableTokens());
+        log.info("IP:{} ,令牌通可用的Token数量:{} " ,ip,bucket.getAvailableTokens());
         if (bucket.tryConsume(1)) {
             return chain.filter(exchange);
         } else {
