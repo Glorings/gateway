@@ -1,5 +1,6 @@
 package com.example.gateway;
 
+import com.example.gateway.filter.CustomGatewayFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -150,5 +151,18 @@ public class GatewayApplication {
                     .filters(f ->f.retry(config -> config.setRetries(2).setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)))
                     .uri("http://localhost:8082/retry?key=abc&count=5"))
             .build();
+    }
+
+    //自定义GatewayFilter
+    @Bean
+    public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(r -> r.path("/test")
+                        .filters(f -> f.filter(new CustomGatewayFilter()))
+                        .uri("http://localhost:8082/customFilter?name=Glorings")
+                        .order(0)
+                        .id("custom_filter")
+                )
+                .build();
     }
 }
