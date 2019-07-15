@@ -60,6 +60,14 @@
             <version>2.9.2</version>
         </dependency>
         <!--swagger-->
+
+        <!-- Bucket4j限流-->
+        <dependency>
+            <groupId>com.github.vladimir-bukhtoyarov</groupId>
+            <artifactId>bucket4j-core</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!-- Bucket4j限流-->
     </dependencies>
 
     <dependencyManagement>
