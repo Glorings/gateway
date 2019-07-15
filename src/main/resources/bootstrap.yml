@@ -1,5 +1,5 @@
 server:
-  port: 5001
+  port: 5021
 spring:
   application:
     name: gateway
@@ -168,6 +168,35 @@ spring:
         predicates:
         - Path=/test
         - Weight=service1, 5
+
+spring:
+  cloud:
+      gateway:
+        locator:
+          enabled: true
+        routes:
+        - id: sc-service
+          uri: lb://sc-service
+          predicates:
+          - Path=/admin/**
+          filters:
+          - GwSwaggerHeaderFilter
+          - StripPrefix=1
+
+
+spring:
+  cloud:
+      gateway:
+        locator:
+          enabled: true
+        routes:
+        - id: sc-service
+          uri: lb://product
+          predicates:
+          - Path=/admin/**
+          filters:
+          - GwSwaggerHeaderFilter
+          - StripPrefix=1
 
 logging: ## Spring Cloud Gateway的日志配置
   level:
