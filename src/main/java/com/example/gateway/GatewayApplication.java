@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -104,4 +105,50 @@ public class GatewayApplication {
                     .uri("http://baidu.com"))
             .build();
     }*/
+
+   /* @Bean
+    public RouteLocator testRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("add_request_header_route", r ->
+                        r.path("/test").filters(f -> f.addRequestHeader("X-Request-Acme", "ValueB"))
+                                .uri("http://localhost:8082/test/head"))
+                .build();
+    }*/
+
+   /* @Bean
+    public RouteLocator testRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("add_request_parameter_route", r ->
+                        r.path("/addRequestParameter").filters(f -> f.addRequestParameter("example", "ValueB"))
+                                .uri("http://localhost:8082/test/addRequestParameter"))
+                .build();
+    }*/
+
+
+   /* @Bean
+    public RouteLocator testRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("rewritepath_route", r ->
+                        r.path("/foo/**").filters(f -> f.rewritePath("/foo/(?<segment>.*)","/$\\{segment}"))
+                                .uri("http://www.baidu.com"))
+                .build();
+    }*/
+
+  /*  @Bean
+    public RouteLocator testRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("add_request_header_route", r ->
+                        r.path("/test").filters(f -> f.addResponseHeader("X-Response-Foo", "Bar"))
+                                .uri("http://www.baidu.com"))
+                .build();
+    }*/
+
+    @Bean
+    public RouteLocator retryRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+            .route("retry_route", r -> r.path("/test/retry")
+                    .filters(f ->f.retry(config -> config.setRetries(2).setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)))
+                    .uri("http://localhost:8082/retry?key=abc&count=5"))
+            .build();
+    }
 }

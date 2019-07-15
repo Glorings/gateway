@@ -90,6 +90,17 @@ spring:
 #        predicates:
 #          - Query=token,Glorings
 
+#rewritePath filter
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: method_routes
+        uri: http://localhost:8082/test/cookie
+        predicates:
+          - Query=token,Glorings
+
+
 #RemoteAddr断言
 spring:
   cloud:
@@ -99,6 +110,35 @@ spring:
         uri: http://localhost:8082/test/cookie
         predicates:
           - RemoteAddr=127.0.0.1
+
+#StripPrefix过滤器
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: baidu_route
+        uri: http://www.baidu.com
+        predicates:
+        - Path=/baidu/test/**
+        filters:
+        - StripPrefix=2
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefix_route
+        uri: http://localhost:8071/test/Hystrix?isSleep=true
+        predicates:
+        - Path=/test/Hystrix
+        filters:
+        - name: Hystrix # Hystrix Filter的名称
+          args: # Hystrix配置参数
+            name: fallbackcmd #HystrixCommand的名字
+            fallbackUri: forward:/fallback #fallback对应的uri
+
+#Hystrix的fallbackcmd的时间
+hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 5000
 
 logging: ## Spring Cloud Gateway的日志配置
   level:

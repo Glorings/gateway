@@ -15,7 +15,7 @@ public class TestController {
 
 
     // 这里只举例获取服务方信息,不去请求服务方接口
-    @GetMapping("/test")
+    @GetMapping("/test2")
     public String test(){
         String format = ZonedDateTime.now().minusHours(1).format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
         System.out.println(format);
