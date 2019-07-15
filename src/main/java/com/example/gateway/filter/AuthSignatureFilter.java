@@ -16,12 +16,12 @@ public class AuthSignatureFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String token = exchange.getRequest().getQueryParams().getFirst("authToken");
+       /* String token = exchange.getRequest().getQueryParams().getFirst("authToken");
         if (null==token  || token.isEmpty()) {
             //当请求不携带Token或者token为空时，直接设置请求状态码为401，返回
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
-        }
+        }*/
         return chain.filter(exchange);
     }
 

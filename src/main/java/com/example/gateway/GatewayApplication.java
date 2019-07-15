@@ -154,7 +154,7 @@ public class GatewayApplication {
     }
 
     //自定义GatewayFilter
-    @Bean
+  /*  @Bean
     public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/test")
@@ -164,5 +164,5 @@ public class GatewayApplication {
                         .id("custom_filter")
                 )
                 .build();
-    }
+    }*/
 }
