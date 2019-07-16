@@ -1,7 +1,9 @@
 package com.example.gateway;
 
 import com.example.gateway.filter.CustomGatewayFilter;
+import com.example.gateway.filter.GatewayRateLimitFilterByCpu;
 import com.example.gateway.filter.GatewayRateLimitFilterByIp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -21,6 +23,9 @@ public class GatewayApplication {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
+
+    @Autowired
+    private GatewayRateLimitFilterByCpu gatewayRateLimitFilterByCpu;
 
     /**
      * 基本的转发
@@ -168,11 +173,21 @@ public class GatewayApplication {
                 .build();
     }*/
 
-    @Bean
+   /* @Bean
     public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/test/rateLimit")
                         .filters(f -> f.filter(new GatewayRateLimitFilterByIp(10,1,Duration.ofSeconds(1))))
+                        .uri("http://localhost:3002/hello/rateLimit")
+                        .id("rateLimit_route")
+                ).build();
+    }*/
+
+    @Bean
+    public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(r -> r.path("/test/rateLimit")
+                        .filters(f -> f.filter(gatewayRateLimitFilterByCpu))
                         .uri("http://localhost:3002/hello/rateLimit")
                         .id("rateLimit_route")
                 ).build();
